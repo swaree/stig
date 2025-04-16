@@ -8,7 +8,7 @@ import pandas as pd
 from scipy.special import j1
 
 import generateProjection as gP
-from python_scripts import constants
+from StarTrackerImageGen import constants
 
 util_img = 'UTIL'
 sim_img = 'SIM'
@@ -155,4 +155,4 @@ if __name__ == '__main__':
             roll = random.uniform(-180, 180)
             
             random_data = gP.generate_projection(ra=ra, dec=dec, roll=roll, cfg_fp=args.cam, plot=False)
-            generate_image(random_data, args.cam, args.dname)           
+            generate_image(data=random_data, camera=args.cam, direc=args.dname, ra=ra, dec=dec, roll=roll)          
