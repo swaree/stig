@@ -10,7 +10,7 @@ from matplotlib.patches import Rectangle
 from catalogReader.catalogReader import CatalogReader
 from catalogReader.headerFormats import YaleHeader
 from catalogReader.star import YaleStar
-from python_scripts import constants
+from StarTrackerImageGen import constants
 
 PI = np.pi
 MAXMAG = 5
