@@ -30,6 +30,10 @@ To generate simulated (and utility images), **generateImage** can be called. Sim
 ![generateImageHelpMenu](media/genImgHelp.png)
 
 The images generated include a true-to-size image (right) based on the camera pixel and a MATPLOTLIB utility image (left) to show where the stars should be.
+|                                     |                                     |
+| ----------------------------------- | ----------------------------------- |
+| ![](media/UTIL_-75.14933065298278_-77.92631917270793_11.490861906531109.png) | ![](media/SIM_-75.14933065298278_-77.92631917270793_11.490861906531109.png) |
+
 ![generatedImage](media/BigDipperImg.png)
 
 The tool aims to be as realistic as possible by generating the star brightness and size according to the Airy Disk equations; notice the small and dim ring around the star below. The tool assumes the image is **5 magnitudes** over exposed to increase the star size and brightness.
