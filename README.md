@@ -29,7 +29,7 @@ It should be noted that these analysis plots do not contain the actual image the
 To generate simulated (and utility images), **generateImage** can be called. Similar to **generateProjection**, this tool uses *argparse* to ingest user data such as the PKL file of a previously generated projection. If no PKL file is given, the script will call **generateProjection** with a random pointing direction. It also has the ability to create *n* images as a flag.
 ![generateImageHelpMenu](media/genImgHelp.png)
 
-The images generated include a true-to-size image (right) based on the camera pixel and a MATPLOTLIB utility image (left) to show where the stars should be.
+The images generated include a true-to-size image (right) based on the camera pixel and a MATPLOTLIB utility image (left) to show where the stars should be. These images file name have the RA, DEC and ROLL used to generate them for easier use later on.
 |                                     |                                     |
 | ----------------------------------- | ----------------------------------- |
 | ![](media/UTIL_-75.14933065298278_-77.92631917270793_11.490861906531109.png) | ![](media/SIM_-75.14933065298278_-77.92631917270793_11.490861906531109.png) |
