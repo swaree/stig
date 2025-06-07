@@ -94,11 +94,11 @@ def create_image(starlist:pd.DataFrame, img_wd:int, img_ht:int, outfp:str, ra:fl
     framed_fig, framed_ax = setup_util_image(img_wd=img_wd, img_ht=img_ht)
     sim_fig, sim_ax = setup_sim_image(img_wd=img_wd, img_ht=img_ht)
 
-    ttl = '({}, {}, {})'.format(ra, dec, roll)
+    ttl = '({:.3f}, {:.3f}, {:.3f})'.format(ra, dec, roll)
     framed_ax.set_title(ttl)
 
     # set figure name
-    fname = '_{}_{}_{}.png'.format(ra, dec, roll)
+    fname = '_{:.3f}_{:.3f}_{:.3f}.png'.format(ra, dec, roll)
 
     # store airy distribution
     xM, yM, zM = gen_airy()
@@ -129,6 +129,9 @@ def parse_arguments():
     parser.add_argument('-fp', type=str, help='dataframe pickle filepath (Single Image); Default: Random', default=None)
     parser.add_argument('-cam', type=str, help='Set camera config filepath; Default: Alvium', default=constants.DEFAULT_ALVIUM)
     parser.add_argument('-dname', type=str, help='folder where images are going; Default: _StarTrackerTestImages/simImages/', default=constants.SIM_IMAGES)
+    parser.add_argument('-ra', type=float, help='Custom right ascension, in degrees', default=None)
+    parser.add_argument('-dec', type=float, help='Custom declination, in degrees', default=None)
+    parser.add_argument('-roll', type=float, help='Custom roll, in degrees', default=None)
     
     return parser.parse_args()
 
@@ -147,12 +150,11 @@ if __name__ == '__main__':
     if args.fp is not None:
         data = pd.read_pickle(args.fp)
         generate_image(data=data, camera=args.cam, direc=args.dname)
-    
     else:
         for i in range(args.n):
-            ra = random.uniform(-180, 180)
-            dec = random.uniform(-180, 180)
-            roll = random.uniform(-180, 180)
+            ra = args.ra or random.uniform(-180, 180)
+            dec = args.dec or random.uniform(-180, 180)
+            roll = args.roll or random.uniform(-180, 180)
             
             random_data = gP.generate_projection(ra=ra, dec=dec, roll=roll, cfg_fp=args.cam, plot=False)
             generate_image(data=random_data, camera=args.cam, direc=args.dname, ra=ra, dec=dec, roll=roll)          
