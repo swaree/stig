@@ -135,10 +135,10 @@ def plot_star(star:pd.Series, axes, xM, yM, zM):
     """
     # Get magnitude if available
     brightness = 1.0
-    if 'MAGNITUDE' in star:
-        brightness = magnitude_to_brightness(star['MAGNITUDE'])
-    elif 'MAG_V' in star:
-        brightness = magnitude_to_brightness(star['MAG_V'])
+    if 'v_magnitude' in star:
+        brightness = magnitude_to_brightness(star['v_magnitude'])
+    else:
+        brightness = magnitude_to_brightness(5.0)
     
     # Scale the zM values by the brightness factor
     scaled_zM = zM * brightness
@@ -220,8 +220,6 @@ def create_image_with_noise(starlist:pd.DataFrame, img_wd:int, img_ht:int, ra:fl
         magnitude = None
         if 'v_magnitude' in star:
             magnitude = star['v_magnitude']
-        elif 'MAG_V' in star:
-            magnitude = star['MAG_V']
         else:
             magnitude = 5.0  # Default magnitude if none provided
             
