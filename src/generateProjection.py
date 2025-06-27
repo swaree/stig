@@ -10,7 +10,7 @@ from matplotlib.patches import Rectangle
 from catalogReader.catalogReader import CatalogReader
 from catalogReader.headerFormats import YaleHeader
 from catalogReader.star import YaleStar
-from StarTrackerImageGen import constants
+from stig import constants
 
 PI = np.pi
 MAXMAG = 5
@@ -169,8 +169,8 @@ def update_roll_coordinates(starlist:pd.DataFrame, roll:float)->pd.DataFrame:
 
     for i in range(len(starlist.index)):
         row = starlist.iloc[[i]]
-        x = row['CV_Y']
-        y = row['CV_Z']
+        x = row['CV_Y'].values[0]
+        y = row['CV_Z'].values[0]
 
         cvx[i] = x*np.cos(roll) - y*np.sin(roll)
         cvy[i] = x*np.sin(roll) + y*np.cos(roll)
@@ -196,8 +196,8 @@ def set_image_coordinates(starlist:pd.DataFrame, img_wd:int, img_ht:int, fov:flo
 
         rad = np.sqrt(center_ht**2 + center_wd**2)
         
-        imgx[i] = -1*row['CV_X_ROLL']*rad/(0.5*fov) + center_wd
-        imgy[i] = row['CV_Y_ROLL']*rad/(0.5*fov) + center_ht
+        imgx[i] = -1*row['CV_X_ROLL'].values[0] *rad/(0.5*fov) + center_wd
+        imgy[i] = row['CV_Y_ROLL'].values[0] *rad/(0.5*fov) + center_ht
 
     starlist['IMG_X'] = imgx
     starlist['IMG_Y'] = imgy
@@ -276,10 +276,11 @@ def driver(starlist:pd.DataFrame, ra:float=0, dec:float=0, roll:float=0, cfg:dic
     if saveFrame is not None:
         if saveFrame[-4:] == '.pkl':
             saveFrame = saveFrame[:-4]
-        saveFrame = saveFrame + '_{}_{}_{}.pkl'.format(ra, dec, roll)
-        fstars.to_pickle(saveFrame)
+                       
+        savedFrame = saveFrame + '_{:.3f}_{:.3f}_{:.3f}.pkl'.format(ra*180/PI, dec*180/PI, roll*180/PI)
+        fstars.to_pickle(savedFrame)
 
-        fname = saveFrame + '_{}_{}_{}.csv'.format(ra, dec, roll)
+        fname = saveFrame + '_{:.3f}_{:.3f}_{:.3f}.csv'.format(ra*180/PI, dec*180/PI, roll*180/PI)
         fstars.to_csv(fname, sep='\t', encoding='utf-8', header='true')
 
     return fstars
@@ -438,15 +439,15 @@ def plot_sphere(starlist:pd.DataFrame, ra:float, dec:float, roll:float, fov:floa
 
 def parse_arguments()->argparse.Namespace:
 
-    parser = argparse.ArgumentParser(description="Set camera and simulation properties")
+    parser = argparse.ArgumentParser(description="Set camera and simulation properties",prefix_chars='@')
 
-    parser.add_argument('-fp', help='Set camera config filepath; Default: Alvium', type=str, default=constants.DEFAULT_ALVIUM)
-    parser.add_argument('-ra', help='Set Right Ascension [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
-    parser.add_argument('-dec', help='Set Declination [dec]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
-    parser.add_argument('-roll', help='Set Roll Angle [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))    
-    parser.add_argument('-m', help='Set Min Magnitude; Default: Camera Specific', type=float, default=None)
-    parser.add_argument('-p', help='Show/Hide Plot (0/1)', type=int, default=1)
-    parser.add_argument('-s', help='Filepath to save dataframe (opt); Default: N/A', type=str, default=None)
+    parser.add_argument('@fp', help='Set camera config filepath; Default: Alvium', type=str, default=constants.DEFAULT_ALVIUM)
+    parser.add_argument('@ra', help='Set Right Ascension [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
+    parser.add_argument('@dec', help='Set Declination [dec]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
+    parser.add_argument('@roll', help='Set Roll Angle [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))    
+    parser.add_argument('@m', help='Set Min Magnitude; Default: Camera Specific', type=float, default=None)
+    parser.add_argument('@p', help='Show/Hide Plot (0/1)', type=int, default=1)
+    parser.add_argument('@s', help='Filepath to save dataframe (opt); Default: N/A', type=str, default=None)
 
     args = parser.parse_args()
 
