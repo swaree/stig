@@ -277,10 +277,10 @@ def driver(starlist:pd.DataFrame, ra:float=0, dec:float=0, roll:float=0, cfg:dic
         if saveFrame[-4:] == '.pkl':
             saveFrame = saveFrame[:-4]
                        
-        savedFrame = saveFrame + '_{:.3f}_{:.3f}_{:.3f}.pkl'.format(ra*180/PI, dec*180/PI, roll*180/PI)
+        savedFrame = saveFrame + '_{}_{}_{}.pkl'.format(ra*180/PI, dec*180/PI, roll*180/PI)
         fstars.to_pickle(savedFrame)
 
-        fname = saveFrame + '_{:.3f}_{:.3f}_{:.3f}.csv'.format(ra*180/PI, dec*180/PI, roll*180/PI)
+        fname = saveFrame + '_{}_{}_{}.csv'.format(ra*180/PI, dec*180/PI, roll*180/PI)
         fstars.to_csv(fname, sep='\t', encoding='utf-8', header='true')
 
     return fstars
@@ -442,9 +442,9 @@ def parse_arguments()->argparse.Namespace:
     parser = argparse.ArgumentParser(description="Set camera and simulation properties",prefix_chars='@')
 
     parser.add_argument('@fp', help='Set camera config filepath; Default: Alvium', type=str, default=constants.DEFAULT_ALVIUM)
-    parser.add_argument('@ra', help='Set Right Ascension [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
-    parser.add_argument('@dec', help='Set Declination [dec]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))
-    parser.add_argument('@roll', help='Set Roll Angle [deg]; Default: Random [-180, 180]', type=float, default=random.uniform(-180, 180))    
+    parser.add_argument('@ra', help='Set Right Ascension [deg]; Default: Random [0, 360]', type=float, default=random.uniform(0, 360))
+    parser.add_argument('@dec', help='Set Declination [dec]; Default: Random [-90, 90]', type=float, default=random.uniform(-90, 90))
+    parser.add_argument('@roll', help='Set Roll Angle [deg]; Default: Random [0, 360]', type=float, default=random.uniform(0, 360))    
     parser.add_argument('@m', help='Set Min Magnitude; Default: Camera Specific', type=float, default=None)
     parser.add_argument('@p', help='Show/Hide Plot (0/1)', type=int, default=1)
     parser.add_argument('@s', help='Filepath to save dataframe (opt); Default: N/A', type=str, default=None)
@@ -453,9 +453,9 @@ def parse_arguments()->argparse.Namespace:
 
     return args
 
-def generate_projection(ra:float=random.uniform(-180,180),
-                        dec:float=random.uniform(-180, 180),
-                        roll:float=random.uniform(-180, 180),
+def generate_projection(ra:float=random.uniform(0, 360),
+                        dec:float=random.uniform(-90, 90),
+                        roll:float=random.uniform(0, 1360),
                         cfg_fp:str=constants.DEFAULT_ALVIUM,
                         catpkl_fp:str=constants.YBSC_PATH,
                         camera_mag:float=None,

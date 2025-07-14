@@ -344,11 +344,11 @@ def create_image(starlist:pd.DataFrame, img_wd:int, img_ht:int, ra:float, dec:fl
     framed_fig, framed_ax = setup_util_image(img_wd=img_wd, img_ht=img_ht)
     sim_fig, sim_ax = setup_sim_image(img_wd=img_wd, img_ht=img_ht)
 
-    ttl = '({:.3f}, {:.2f}, {:.2f})'.format(ra, dec, roll)
+    ttl = '({}, {}, {})'.format(ra, dec, roll)
     framed_ax.set_title(ttl)
 
     # set figure name
-    fname = '_{:.3f}_{:.3f}_{:.3f}.png'.format(ra, dec, roll)
+    fname = '_{}_{}_{}.png'.format(ra, dec, roll)
 
     # store airy distribution
     xM, yM, zM = gen_airy()
@@ -447,9 +447,9 @@ if __name__ == '__main__':
         )
     else:
         for i in range(args.n):
-            ra = args.ra or random.uniform(-180, 180)
-            dec = args.dec or random.uniform(-180, 180)
-            roll = args.roll or random.uniform(-180, 180)
+            ra = args.ra or random.uniform(0, 360)
+            dec = args.dec or random.uniform(-90, 90)
+            roll = args.roll or random.uniform(0, 360)
             
             random_data = gP.generate_projection(ra=ra, dec=dec, roll=roll, cfg_fp=args.cam, plot=False, save=args.dname)
             generate_image(
